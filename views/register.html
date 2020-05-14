@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="icon" href="../public/favicon.ico">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Register to Code Rage!</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="container-fluid mb-3 h-100" style="background-color: yellowgreen;">
+                <h1 style="color:white;">Code Rage</h1>
+            </div>
+        </div>
+
+       <div class="row justify-content-center" id="registrationForm">
+            <div class="col-lg-4 col-md-8 col-sm-12">
+                <form class="form-group col-12 needs-validation" novalidate method="POST" id="registerForm" onsubmit="postRegForm();return false">
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="example@abc.com" aria-describedby="emailHelp" required>
+                        <small id="emailHelp" class="text-muted">Please provide a valid email address.</small>
+                        <div class="invalid-feedback">Email address is required!</div> 
+                      </div>
+              
+                      <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="" aria-describedby="passwordHelp" required>
+                        <small id="passwordHelp" class="text-muted">Your password must be between 8 and 16 characters.</small>
+                        <div class="invalid-feedback">Password is required!</div> 
+                      </div>
+              
+                      <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="username" name="username" id="username" class="form-control" placeholder="" aria-describedby="usernameHelp" required>
+                        <small id="usernameHelp" class="text-muted">Please provide a username.</small>
+                        <div class="invalid-feedback">Username is required!</div> 
+                      </div>
+    
+                    <input name="" id="submitButton" class="btn btn-primary mx-1" type="submit" value="Submit" onclick="">
+                    <input name="" id="resetButton" class="btn btn-danger mx-1" type="reset" value="Reset">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+      function postRegForm (){
+        $.post('/register', $('#registerForm').serialize())
+        .done(function(data) {
+          var response = JSON.parse(JSON.stringify(data))
+           if(response.code === 00){
+            $('#registrationForm').html('<h1>' + response.message + '</h1>')
+          }
+        }).fail(function (jqXHR, textStatus, error){
+          if(jqXHR.responseJSON.code === 01){
+            $('#usernameHelp').html(jqXHR.responseJSON.message)
+            $('#usernameHelp').removeClass('text-muted')
+            $('#usernameHelp').addClass('text-danger')
+          }
+        })
+      }
+        
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="../public/form-validation.js"></script>
+  </body>
+</html>
