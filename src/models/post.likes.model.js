@@ -1,8 +1,8 @@
-const mongoose = require('mongoose')
+var mongoose = require('mongoose')
 
 var Schema = mongoose.Schema
 
-var CommentSchema = new Schema({
+var PostLikesSchema = new Schema({
 
     user: {
         required: true,
@@ -14,15 +14,12 @@ var CommentSchema = new Schema({
         type: mongoose.Types.ObjectId
     },
 
-    text: {
-        required: true,
-        type: String
-    },
-
     timestamp:{
         default: new Date(),
         type: Date
     }
 })
 
-module.exports = mongoose.model('Comment', CommentSchema)
+PostLikesSchema.index({'user': 1, 'post': 1}, {unique: true})
+
+module.exports = mongoose.model('PostLikes', PostLikesSchema)

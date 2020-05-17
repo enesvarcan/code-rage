@@ -1,22 +1,17 @@
-const mongoose = require('mongoose')
+var mongoose = require('mongoose')
 
 var Schema = mongoose.Schema
 
-var CommentSchema = new Schema({
+var PostCommentSchema = new Schema({
 
     user: {
         required: true,
         type: mongoose.Types.ObjectId
     },
 
-    post: {
+    comment: {
         required: true,
         type: mongoose.Types.ObjectId
-    },
-
-    text: {
-        required: true,
-        type: String
     },
 
     timestamp:{
@@ -25,4 +20,6 @@ var CommentSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('Comment', CommentSchema)
+PostCommentSchema.index({'user': 1, 'comment': 1}, {unique: true})
+
+module.exports = mongoose.model('PostComment', PostCommentSchema)
