@@ -1,5 +1,5 @@
 exports.errorHandler = (err, req, res, next) => {
-    if(err.code === 11000) {
+    /*if(err.code === 11000) {
         res.status(406).send({code: 01, message: 'Username is already taken!'})
     }
 
@@ -7,6 +7,8 @@ exports.errorHandler = (err, req, res, next) => {
         if(err.errors.username || err.errors.email || err.errors.password){
             res.status(400).send({code: 02, message: 'Fill all required fields!'})
         }
-    }
+    }*/
+
+    if(err) console.log(err)
 }
 
