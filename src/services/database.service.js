@@ -4,8 +4,12 @@ const Post = require('../models/post.model')
 const Comment = require('../models/comment.model')
 const PostLikes = require('../models/post.likes.model')
 const PostComments = require('../models/post.comments.model')
+/*
+    Database service for controllers
+    Create,Read,Update,Delete -> insert..(), find..(), update..(), remove..()  
+*/
 
-exports.saveUser = (userInfo, cb) => {
+exports.insertUser = (userInfo, cb) => {
 
     var user = new User(userInfo)
 
@@ -16,8 +20,50 @@ exports.saveUser = (userInfo, cb) => {
     })
 }
 
-exports.saveUserProfile = () => {
+exports.insertUserProfile = () => {
 
 }
+
+exports.updateUserProfile = () => {
+
+}
+
+exports.findUserProfile = () => {
+
+}
+
+exports.insertPost = () => {
+
+}
+
+exports.findPost = () => {
+
+}
+
+exports.updatePost = () => {
+
+}
+
+exports.deletePost = () => {
+
+}
+
+exports.insertComment = () => {
+
+}
+
+exports.findComment = () => {
+
+}
+
+exports.updateComment = () => {
+
+}
+
+exports.deleteComment = () => {
+    
+}
+
+
 
     
