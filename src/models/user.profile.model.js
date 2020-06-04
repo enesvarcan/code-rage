@@ -20,7 +20,7 @@ var UserProfileSchema = new Schema({
     },
 
     profilePicture: {
-        //E: pictures are stored in file system, this shows the path to the picture
+        //Pictures are stored in the file system, this shows the path to the picture
         type: String
     },
 
@@ -30,12 +30,6 @@ var UserProfileSchema = new Schema({
     
     bio: {
         type: String
-    },
-
-    isNewUser: {
-        //E: is this first login?
-        type: Boolean,
-        default: true
     },
 
     timestamp:{

@@ -8,9 +8,10 @@ exports.register = (req, res, next) => {
         email: req.body.email
     }
 
-    dbService.insertUser(userInfo, (err, message) => {
+    dbService.insertUser(userInfo, (err, user) => {
         if(err) next(err)
-        return res.send(message)
+        
+        if (user) return res.send({message: 'registration_complete'})
     })
 }
 
@@ -31,11 +32,27 @@ exports.login = (req, res, next) => {
     })(req, res, next)
 }
 
-exports.isLoggedIn = (req, res, next) => {
-    if(req.user){
-        res.redirect('/')
-    } 
 
-    else next()
+exports.createProfile = (req, res, next) => {
+    
+    var profileInfo = {
+        userId: req.user._id,
+        email: req.user.email,
+        name: req.body.name,
+        profilePicture: req.body.profilePicture, //TODO: upload profile picture
+        interestedIn: req.body.interestedIn,
+        bio: req.body.bio
+    }
+
+    dbService.insertUserProfile(profileInfo, (err, profile) => {
+        if(err) next(err)
+
+        if(profile){
+            
+            dbService.updateUser(req.user, {hasProfile: true}, (err, u) => {
+                if(err) next(err)
+                return res.send({message: 'profile_created'})
+            })    
+        }
+    })
 }
-

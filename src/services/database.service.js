@@ -16,12 +16,29 @@ exports.insertUser = (userInfo, cb) => {
     user.save((err, u) => {
         if (err) return cb(err)
 
-        return cb(false, {code: 00, message: 'Registration Complete!'})
+        return cb(null, u)
     })
 }
 
-exports.insertUserProfile = () => {
+exports.updateUser = (user, update, cb) => {
 
+    User.findOneAndUpdate({_id: user._id}, {$set: update}, {new: true}, (err, uu) => {
+        if (err) cb(err)
+
+        return cb(null, uu)
+    })
+
+    
+}
+
+exports.insertUserProfile = (profileInfo, cb) => {
+    var userProfile = new UserProfile(profileInfo)
+
+    userProfile.save((err, up) => {
+        if(err) return cb(err)
+
+        return cb(null, up)
+    })
 }
 
 exports.updateUserProfile = () => {
@@ -29,6 +46,10 @@ exports.updateUserProfile = () => {
 }
 
 exports.findUserProfile = () => {
+
+}
+
+exports.findUserProfileByUserId = (userId, cb) => {
 
 }
 
@@ -61,7 +82,7 @@ exports.updateComment = () => {
 }
 
 exports.deleteComment = () => {
-    
+
 }
 
 
