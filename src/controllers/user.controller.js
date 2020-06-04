@@ -8,7 +8,7 @@ exports.register = (req, res, next) => {
         email: req.body.email
     }
 
-    dbService.saveUser(userInfo, (err, message) => {
+    dbService.insertUser(userInfo, (err, message) => {
         if(err) next(err)
         return res.send(message)
     })
@@ -19,9 +19,8 @@ exports.login = (req, res, next) => {
     passport.authenticate('local', function(err, user, info){
 
         if(err) return next(err)
-        console.log(user)
 
-        if(!user) return res.status(402).send(info.message)
+        if(!user) return res.status(402).send(info)
 
         req.logIn(user, function(err){
             if (err) return next(err)
@@ -39,3 +38,4 @@ exports.isLoggedIn = (req, res, next) => {
 
     else next()
 }
+
