@@ -1,4 +1,5 @@
 const passport = require('passport')
+const dbService = require('../services/database.service')
 
 exports.register = (req, res, next) => {
     var userInfo = {
@@ -7,8 +8,10 @@ exports.register = (req, res, next) => {
         email: req.body.email
     }
 
-    req.userInfo = userInfo
-    next()
+    dbService.saveUser(userInfo, (err, message) => {
+        if(err) next(err)
+        return res.send(message)
+    })
 }
 
 exports.login = (req, res, next) => {
@@ -30,7 +33,9 @@ exports.login = (req, res, next) => {
 }
 
 exports.isLoggedIn = (req, res, next) => {
-    if(req.user) res.redirect('/')
+    if(req.user){
+        res.redirect('/')
+    } 
 
     else next()
 }

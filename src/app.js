@@ -12,7 +12,7 @@ const passportConfig = require('./config/passport')
 const app = express()
 
 //Configuration: express-session
-app.use(session({secret: 'badc0de', resave: false, saveUninitialized: true}))
+app.use(session({secret: 'b4dc0d3', resave: false, saveUninitialized: true}))
 //Configuration: passport
 require('./config/passport')(app)
 //Configuration: body-parser
@@ -23,7 +23,7 @@ app.use(cors())
 //Configuration: express-static
 app.use(express.static(path.join(__dirname, '..', 'public')))
 //Configuration: errorHandler
-app.use('*', require('./middlewares/errorhandler.mw').errorHandler)
+app.use('*', require('./services/errorhandler.mw').errorHandler)
 //Configuration: routers
 require('./routes/main.router')(app)
 require('./routes/page.router')(app)
