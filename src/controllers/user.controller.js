@@ -26,7 +26,10 @@ exports.createProfile = (req, res, next) => {
 
 exports.updateProfile = (req, res, next) => {
 
-    dbService.findProfile(req.user._id, (err, profile) => {
+    //TODO: 
+    var update;
+
+    dbService.findProfile(req.user._id, update, (err, profile) => {
         if (err) next(err)
 
         if(profile){
