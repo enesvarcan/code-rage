@@ -9,6 +9,8 @@ const PostComment = require('../models/post.comment.model')
     Create,Read,Update,Delete(CRUD) -> insert..(), find..(), update..(), remove..()  
 */
 
+//User
+
 exports.insertUser = (userInfo, cb) => {
 
     var user = new User(userInfo)
@@ -28,6 +30,8 @@ exports.updateUser = (userId, update, cb) => {
         return cb(null, updatedUser)
     })  
 }
+
+//Profile
 
 exports.insertProfile = (profileInfo, cb) => {
     var userProfile = new UserProfile(profileInfo)
@@ -56,6 +60,8 @@ exports.findProfile = (userId, cb) => {
         return cb(null, profile)
     })
 }
+
+//Post
 
 exports.insertPost = (userId, postInfo, cb) => {
 
@@ -96,6 +102,8 @@ exports.deletePost = (postId, cb) => {
     })
 }
 
+//Comment
+
 exports.insertComment = (userId, postId, commentInfo, cb) => {
 
     var comment = new PostComment(commentInfo)
@@ -135,6 +143,8 @@ exports.deleteComment = (commentId, cb) => {
         return cb(null, deletedComment)
     })
 }
+
+//Like
 
 exports.insertLike = (userId, postId, cb) => {
 
