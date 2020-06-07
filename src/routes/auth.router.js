@@ -9,13 +9,13 @@ function isAuthenticated(req, res, next) {
     next()
 }
 
-router.get('/', pageController.indexPage)
+router.get('/', pageController.renderIndex)
 
-router.get('/login', isAuthenticated, pageController.loginPage)
+router.get('/login', isAuthenticated, pageController.renderLogin)
 
 router.post('/login', authController.login)
 
-router.get('/register', isAuthenticated, pageController.registerPage)
+router.get('/register', isAuthenticated, pageController.renderLogin)
 
 router.post('/register', authController.register)
 

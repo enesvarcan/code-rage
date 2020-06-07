@@ -27,3 +27,7 @@ exports.createProfile = (req, res, next) => {
 exports.updateProfile = (req, res, next) => {
     
 }
+
+exports.readProfile = (req, res, next) => {
+    
+}

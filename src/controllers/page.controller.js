@@ -1,19 +1,23 @@
 const path = require('path')
 
-exports.loginPage = (req, res, next) => {
+//Auth
+
+exports.renderLogin = (req, res, next) => {
 
     console.log('render login page')
     //if req.get('Warning'=='Not Logged In') then warn user 
     return res.sendFile(path.join(__dirname, '../../views/login.html'))
 }
 
-exports.registerPage = (req, res, next) => {
+exports.renderRegister = (req, res, next) => {
     console.log('render register page')
     return res.sendFile(path.join(__dirname, '../../views/register.html'))
 
 }
 
-exports.indexPage = (req, res, next) => {
+//User
+
+exports.renderIndex = (req, res, next) => {
 
     //render index page
     if(!req.user){
@@ -27,22 +31,48 @@ exports.indexPage = (req, res, next) => {
 
 }
 
-exports.userProfilePage = (req, res, next) => {
+exports.renderProfile = (req, res, next) => {
     console.log('render user profile page')
     return res.send('user profile page')
 }
 
-exports.userProfileCreatePage = (req, res, next) => {
+exports.renderProfileCreate = (req, res, next) => {
     console.log('render user profile creation page')
     return res.sendFile(path.join(__dirname, '../../views/createProfile.html'))
 }
 
-exports.userProfileEditPage = (req, res, next) => {
+exports.renderProfileEdit = (req, res, next) => {
     console.log('render edit page of user profile')
     return res.send('edit user profile')
 }
 
-exports.userPostsPage = (req, res, next) => {
+exports.renderUserPosts = (req, res, next) => {
     console.log('render user\'s posts')
     return res.send('my posts')
+}
+
+//Post
+
+exports.renderAllPosts = (req, res, next) => {
+
+}
+
+exports.renderPost = (req, res, next) => {
+
+}
+
+exports.renderPostEdit = (req, res, next) => {
+
+}
+
+exports.renderPostCreate = (req, res, next) => {
+
+}
+
+exports.renderCommentCreate = (req, res, next) => {
+
+}
+
+exports.renderComment = (req, res, next) => {
+    
 }
