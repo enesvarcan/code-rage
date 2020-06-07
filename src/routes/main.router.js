@@ -1,10 +1,23 @@
-const userController = require('../controllers/user.controller')
+const router = require('express').Router()
+const pageController = require('../controllers/page.controller')
 
-module.exports = (app) => {
+router.use(function isAuthenticated(req, res, next) {
 
-    app.post('/register', userController.register)
+    if(!req.user){
 
-    app.post('/login', userController.login)
+        //To warn user about redirection(user must be logged in): res.append('Warning', 'Not Logged In')
+        return res.redirect(401, '/login')
+    }
+})
 
-    app.post('/user/createProfile', userController.createProfile)
-}
+router.get('/user', pageController.userProfilePage)
+
+/* router.get('/user/edit', pageController.userProfileEditPage)
+
+router.patch('/user/edit')
+
+router.get('/user/myPosts')
+
+router.delete('/user/myPosts/:postId') */
+
+module.exports = router

@@ -21,7 +21,7 @@
 
        <div class="row justify-content-center" id="registrationForm">
             <div class="col-lg-4 col-md-8 col-sm-12">
-                <form class="form-group col-12 needs-validation" novalidate method="POST" id="registerForm" onsubmit="postRegForm();return false">
+                <form class="form-group col-12 needs-validation" novalidate method="POST">
                     <div class="form-group">
                         <label for="email">Email address</label>
                         <input type="email" name="email" id="email" class="form-control" placeholder="example@abc.com" aria-describedby="emailHelp" required>
@@ -50,27 +50,6 @@
         </div>
     </div>
 
-    <script>
-
-      function postRegForm (){
-        $.post('/register', $('#registerForm').serialize())
-        .done(function(data) {
-          var response = JSON.parse(JSON.stringify(data))
-           if(response.code === 00){
-            $('#registrationForm').html('<h1>' + response.message + '</h1>')
-          }
-        }).fail(function (jqXHR, textStatus, error){
-          if(jqXHR.responseJSON.code === 01){
-            $('#usernameHelp').html(jqXHR.responseJSON.message)
-            $('#usernameHelp').removeClass('text-muted')
-            $('#usernameHelp').addClass('text-danger')
-          } else if(jqXHR.responseJSON.code === 02){
-            alert(jqXHR.responseJSON.message)
-          }
-        })
-      }
-        
-    </script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

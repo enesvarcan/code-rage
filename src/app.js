@@ -25,9 +25,10 @@ app.use(express.static(path.join(__dirname, '..', 'public')))
 //Configuration: errorHandler
 //app.use('*', require('./services/errorhandler.mw').errorHandler)
 //Configuration: routers
-require('./routes/main.router')(app)
-require('./routes/page.router')(app)
+app.use(require('./routes/auth.router'))
+app.use(require('./routes/main.router'))
 
+app.enable('trust proxy')
 
 mongoose.set('useNewUrlParser', true)
 mongoose.set('useFindAndModify', false)
