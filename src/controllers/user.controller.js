@@ -23,3 +23,7 @@ exports.createProfile = (req, res, next) => {
         }
     })
 }
+
+exports.updateProfile = (req, res, next) => {
+    
+}

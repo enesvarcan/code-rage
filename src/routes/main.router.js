@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const pageController = require('../controllers/page.controller')
+const userController = require('../controllers/user.controller')
 
 router.use(function isAuthenticated(req, res, next) {
 
@@ -12,12 +13,13 @@ router.use(function isAuthenticated(req, res, next) {
 
 router.get('/user', pageController.userProfilePage)
 
-/* router.get('/user/edit', pageController.userProfileEditPage)
+router.post('/user', userController.createProfile)
 
-router.patch('/user/edit')
+router.get('/user/editProfile', pageController.userProfileEditPage)
 
-router.get('/user/myPosts')
+router.patch('/user/editProfile', userController.updateProfile)
 
-router.delete('/user/myPosts/:postId') */
+router.get('/user/myPosts', pageController.userPostsPage)
+
 
 module.exports = router
