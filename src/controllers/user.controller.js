@@ -11,7 +11,7 @@ exports.createProfile = (req, res, next) => {
         bio: req.body.bio
     }
 
-    dbService.insertUserProfile(profileInfo, (err, profile) => {
+    dbService.insertProfile(profileInfo, (err, profile) => {
         if(err) next(err)
 
         if(profile){
@@ -29,5 +29,5 @@ exports.updateProfile = (req, res, next) => {
 }
 
 exports.readProfile = (req, res, next) => {
-    
+
 }

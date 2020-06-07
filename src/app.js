@@ -8,7 +8,6 @@ const bodyParser = require('body-parser')
 const path = require('path')
 const CONNSTR = require('./config/db.connection')
 const PORT = require('./config/server.port')
-const passportConfig = require('./config/passport')
 const app = express()
 
 //Configuration: express-session
@@ -27,8 +26,6 @@ app.use(express.static(path.join(__dirname, '..', 'public')))
 //Configuration: routers
 app.use(require('./routes/auth.router'))
 app.use(require('./routes/main.router'))
-
-app.enable('trust proxy')
 
 mongoose.set('useNewUrlParser', true)
 mongoose.set('useFindAndModify', false)
