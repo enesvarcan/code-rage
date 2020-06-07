@@ -49,9 +49,6 @@ exports.findUserProfile = () => {
 
 }
 
-exports.findUserProfileByUserId = (userId, cb) => {
-
-}
 
 exports.insertPost = () => {
 
