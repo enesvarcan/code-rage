@@ -10,6 +10,8 @@ router.use(function isAuthenticated(req, res, next) {
         //To warn user about redirection(user must be logged in): res.append('Warning', 'Not Logged In')
         return res.redirect(401, '/login')
     }
+
+    next()
 })
 
 //User

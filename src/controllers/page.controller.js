@@ -33,7 +33,7 @@ exports.renderIndex = (req, res, next) => {
 
 exports.renderProfile = (req, res, next) => {
     console.log('render user profile page')
-    return res.send('user profile page')
+    return res.send(req.user.profile)
 }
 
 exports.renderProfileCreate = (req, res, next) => {

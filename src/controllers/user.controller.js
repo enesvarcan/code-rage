@@ -47,6 +47,10 @@ exports.readProfile = (req, res, next) => {
     dbService.findProfile(req.user._id, (err, profile) => {
         if(err) next(err)
 
+        if (!profile){
+            return res.redirect('/user/createProfile')
+        }
+
         req.user.profile = profile
         next()
     })
