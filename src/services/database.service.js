@@ -54,7 +54,7 @@ exports.updateProfile = (profileId, update, cb) => {
 
 exports.findProfile = (userId, cb) => {
 
-    UserProfile.findById(userId, (err, profile) => {
+    UserProfile.findOne({userId: userId}, (err, profile) => {
         if(err) return cb(err)
 
         return cb(null, profile)
