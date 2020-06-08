@@ -13,11 +13,11 @@ router.get('/', pageController.renderIndex)
 
 router.get('/login', isAuthenticated, pageController.renderLogin)
 
-router.post('/login', authController.login)
+router.post('/login', isAuthenticated, authController.login)
 
 router.get('/register', isAuthenticated, pageController.renderLogin)
 
-router.post('/register', authController.register)
+router.post('/register', isAuthenticated, authController.register)
 
 router.get('/logout', authController.logout)
 
