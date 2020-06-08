@@ -58,6 +58,6 @@ router.delete('/post/:postId/comment/:commentId', postController.deleteComment)
 
 //Like
 
-router.post('/post/:postId/like', postController.createLike)
+router.post('/post/:postId/like', postController.changeLikeStatus)
 
 module.exports = router
