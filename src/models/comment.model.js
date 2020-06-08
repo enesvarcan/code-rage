@@ -4,12 +4,12 @@ var Schema = mongoose.Schema
 
 var CommentSchema = new Schema({
 
-    user: {
+    userId: {
         required: true,
         type: mongoose.Types.ObjectId
     },
 
-    post: {
+    postId: {
         required: true,
         type: mongoose.Types.ObjectId
     },
