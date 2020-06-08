@@ -37,6 +37,8 @@ exports.updateProfile = (req, res, next) => {
                 if(err) next(err)
                 return res.send({message: 'profile_updated', updatedProfile: updatedProfile})
             })
+        } else if(!profile){
+            return res.send({message: 'profile_not_found'})
         }
     })
     
