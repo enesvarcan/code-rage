@@ -63,10 +63,9 @@ exports.findProfile = (userId, cb) => {
 
 //Post
 
-exports.insertPost = (userId, postInfo, cb) => {
+exports.insertPost = (postInfo, cb) => {
 
     var post = new Post(postInfo)
-    post.userId = userId
 
     post.save((err, pst) => {
         if(err) return cb(err)
@@ -81,6 +80,15 @@ exports.findPost = (postId, cb) => {
         if(err) return cb(err)
 
         return cb(null, post)
+    })
+}
+
+exports.findPosts = (query, cb) => {
+    
+    Post.find(query, (err, posts) => {
+        if (err) return cb(err)
+
+        return cb(null, posts)
     })
 }
 
