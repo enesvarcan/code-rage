@@ -1,4 +1,5 @@
 const dbService = require('../services/database.service')
+const photoService = require('../services/photo.service')
 
 exports.createProfile = (req, res, next) => {
     
@@ -6,7 +7,7 @@ exports.createProfile = (req, res, next) => {
         userId: req.user._id,
         email: req.user.email,
         name: req.body.name,
-        profilePicture: req.body.profilePicture, //TODO: upload profile picture
+        profilePicture: photoService.uploadPhoto(req.body.profilePicture),
         interestedIn: req.body.interestedIn,
         bio: req.body.bio
     }
@@ -26,14 +27,19 @@ exports.createProfile = (req, res, next) => {
 
 exports.updateProfile = (req, res, next) => {
 
-    //TODO: 
-    var update;
-
     dbService.findProfile(req.user._id, update, (err, profile) => {
         if (err) next(err)
 
         if(profile){
-            dbService.updateProfile(profile._id, (err, updatedProfile) => {
+
+            var update = {
+                name: req.body.name || profile.name,
+                profilePicture: photoService.updatePhoto(req.body.profilePicture) || profile.profilePicture,
+                interestedIn: req.body.interestedIn || profile.interestedIn,
+                bio: req.body.bio || profile.bio
+            }
+
+            dbService.updateProfile(profile._id, update, (err, updatedProfile) => {
                 if(err) next(err)
                 return res.send({message: 'profile_updated', updatedProfile: updatedProfile})
             })
