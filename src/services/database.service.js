@@ -112,11 +112,9 @@ exports.deletePost = (postId, cb) => {
 
 //Comment
 
-exports.insertComment = (userId, postId, commentInfo, cb) => {
+exports.insertComment = (commentInfo, cb) => {
 
     var comment = new PostComment(commentInfo)
-    comment.userId = userId
-    comment.postId = postId
 
     comment.save((err, cmt) => {
         if (err) return cb(err)
@@ -131,6 +129,15 @@ exports.findComment = (commentId, cb) => {
         if (err) return cb(err)
 
         return cb(null, comment)
+    })
+}
+
+exports.findPostComments = (postId, cb) => {
+
+    PostComment.find({postId: postId}, (err, comments) => {
+        if (err) return cb(err)
+
+        return cb(null, comments)
     })
 }
 
@@ -154,12 +161,18 @@ exports.deleteComment = (commentId, cb) => {
 
 //Like
 
-exports.insertLike = (userId, postId, cb) => {
+exports.findLike = (postId, userId, cb) => {
 
-    var postLike = new PostLike({
-        userId: userId,
-        postId: postId
+    PostLike.findOne({postId: postId, userId: userId}, (err, postLike) => {
+        if (err) cb(err)
+
+        return cb(null, postLike)
     })
+}
+
+exports.insertLike = (postLikeInfo, cb) => {
+
+    var postLike = new PostLike(postLikeInfo)
 
     postLike.save((err, pstLike) => {
         if (err) return cb(err)

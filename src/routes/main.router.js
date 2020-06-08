@@ -60,7 +60,4 @@ router.delete('/post/:postId/comment/:commentId', postController.deleteComment)
 
 router.post('/post/:postId/like', postController.createLike)
 
-router.delete('/post/:postId/like', postController.deleteLike)
-
-
 module.exports = router
