@@ -2,13 +2,13 @@
 
 exports.uploadPhoto = (photo, cb) => {
 
-    if(!photo){
-        //upload default photo
-    }
+    //return path
 
 }
 
 exports.updatePhoto = (photo, cb) => {
+
+    //return path
 
 }
 
@@ -17,5 +17,12 @@ exports.deletePhoto = (path, cb) => {
 }
 
 exports.readPhoto = (path, cb) => {
+
+    //return photo
     
+}
+
+exports.setDefaultProfilePicture = (cb) => {
+
+    //return path
 }
