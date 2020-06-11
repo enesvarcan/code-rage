@@ -1,2 +1,2 @@
-const PORT = 8080
+const PORT = process.env.PORT
 module.exports = PORT
