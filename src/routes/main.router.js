@@ -6,9 +6,7 @@ const postController = require('../controllers/post.controller')
 router.use(function isAuthenticated(req, res, next) {
 
     if(!req.user){
-
-        //To warn user about redirection(user must be logged in): res.append('Warning', 'Not Logged In')
-        return res.redirect(401, '/login')
+        return res.redirect('/login')
     }
 
     next()
@@ -40,9 +38,9 @@ router.patch('/post/:postId/editPost', postController.updatePost)
 
 router.delete('/post/:postId', postController.deletePost)
 
-router.get('/post/createNewPost', pageController.renderPostCreate)
+router.get('/posts/createNewPost', pageController.renderPostCreate)
 
-router.post('/post/createNewPost', postController.createPost)
+router.post('/posts/createNewPost', postController.createPost)
 
 //Comment
 
@@ -50,11 +48,11 @@ router.get('/post/:postId/comment/writeComment', pageController.renderCommentCre
 
 router.post('/post/:postId/comment/writeComment', postController.createComment)
 
-router.get('post/:postId/comment/:commentId', postController.readComment, pageController.renderComment)
+router.get('/post/:postId/comment/:commentId', postController.readComment, pageController.renderComment)
 
-router.patch('post/:postId/comment/:commentId', postController.updateComment)
+router.patch('/post/:postId/comment/:commentId/editComment', postController.updateComment)
 
-router.delete('/post/:postId/comment/:commentId', postController.deleteComment)
+router.delete('/post/:postId/comment/:commentId/deleteComment', postController.deleteComment)
 
 //Like
 

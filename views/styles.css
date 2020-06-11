@@ -1,0 +1,131 @@
+/*General CSS
+------------------------------------*/
+
+#page {
+	width:100%;
+	height:100%;
+}
+
+#header {
+	color: #0066ff;
+	background-color: lightgray;
+	border-style: solid;
+	border-color: #0066ff;
+}
+
+#body {
+	color: #0066ff;
+	background-color: lightgray;
+	border-style: none solid solid solid;
+	border-color: #0066ff;
+	
+}
+
+html,body {
+	height:100%;
+}
+
+/* search */
+@media (max-width: 785px) { 
+
+	.custom-search {
+		width: inherit;
+		max-width: 300px;
+	}
+
+}
+@media (max-width: 576px) { 
+
+	.custom-search {
+		/* flex: 0 0 66.666667%; */
+		max-width: 66.666667%;
+		width: inherit;
+		margin-left: 0 !important;
+		margin-right: auto;
+		padding-left: 0 !important;
+	}
+	
+	.custom-profile {
+		flex: 0 0 33.333333%;
+		max-width: 33.333333%;
+		text-align: center;
+	} 
+
+	.custom-search form input {
+		width: auto;
+		max-width: 180px;
+		margin-left: 0 !important;
+		margin-bottom: 5px !important;
+	}
+}
+
+@media (max-width: 576px) { 
+	
+	.custom-profile {
+		max-width: 25%;
+	} 
+
+	.custom-search form input {
+		max-width: 154px;
+	}
+}
+
+/*Home page CSS
+--------------------------------*/
+
+.modal{
+	width:100%;
+	height:100%;
+	background-color: rgba(0,0,0,0.4); 
+}
+
+
+/* Overview page
+-----------------------------------------------------*/
+.overview-page #body {
+	color: #0066ff;
+	background-color: lightgray;
+	border-style: none solid solid solid;
+	border-color: #0066ff;
+}
+
+.overview-page .blog-teaser {
+	background: lightgrey;
+	color: #0066ff;
+	border: 1px solid #0066ff;
+	margin: 30px 0;
+}
+
+.overview-page a:hover {
+	text-decoration: none;
+}
+
+.overview-page .blog-teaser:hover {
+	background: #fff;
+	cursor: pointer;
+}
+
+.overview-page .blog-img {
+	padding: 15px 0;
+	max-width: 100%;
+}
+
+.overview-page .blog-hl {
+	padding: 15px 0;
+}
+
+.overview-page .profile-img {
+	height: 40px;
+	width: 40px !important;
+	border-radius: 50%;
+}
+
+
+
+
+/* Overview page
+-----------------------------------------------------*/
+
+.blog-img-inline {
+	max-width: 40% !important;
+}

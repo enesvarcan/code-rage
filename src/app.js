@@ -26,6 +26,9 @@ app.use(express.static(path.join(__dirname, '..', 'public')))
 //Configuration: routers
 app.use(require('./routes/auth.router'))
 app.use(require('./routes/main.router'))
+//Configuration: ejs
+app.set('views', path.join(__dirname, '../views'))
+app.set('view engine', 'ejs')
 
 mongoose.set('useNewUrlParser', true)
 mongoose.set('useFindAndModify', false)

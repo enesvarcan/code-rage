@@ -2,6 +2,8 @@ const dbService = require('../services/database.service')
 const photoService = require('../services/photo.service')
 
 exports.createProfile = (req, res, next) => {
+
+    //TODO: Error handling for key duplication
     
     var profileInfo = {
         userId: req.user._id,
@@ -27,7 +29,7 @@ exports.createProfile = (req, res, next) => {
 
 exports.updateProfile = (req, res, next) => {
 
-    dbService.findProfile(req.user._id, update, (err, profile) => {
+    dbService.findProfile(req.user._id, (err, profile) => {
         if (err) next(err)
 
         if(profile){
@@ -54,8 +56,6 @@ exports.readProfile = (req, res, next) => {
 
     dbService.findProfile(req.user._id, (err, profile) => {
         if(err) next(err)
-
-        console.log(profile)
 
         if (!profile){
             return res.redirect('/user/createProfile')

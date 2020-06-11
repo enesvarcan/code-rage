@@ -34,3 +34,5 @@ var PostSchema = new Schema({
         type: Date
     }
 })
+
+module.exports = mongoose.model('Post', PostSchema)
