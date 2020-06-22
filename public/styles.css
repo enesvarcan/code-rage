@@ -1,0 +1,183 @@
+/*General CSS
+------------------------------------*/
+html {
+	border-style: none solid solid solid;
+	border-color: #0066ff;
+	border-width: 2px;
+}
+
+.page {
+	width:100%;
+	background-color: lightgray;
+}
+
+#header {
+	color: #0066ff;
+	background-color: lightgray;
+	border-style: solid none solid none;
+	border-color: #0066ff;
+	border-width: 2px;
+}
+
+#body {
+	color: #0066ff;
+	padding-bottom: 30px;
+	background-color: lightgray;
+}
+
+.profile-img {
+	height: 40px;
+	width: 40px !important;
+	border-radius: 50%;
+}
+
+.pt-30 {
+	padding-top: 30px;
+}
+
+.blue-line-hr {
+	border-color: #0066ff;
+}
+
+.btn-custom {
+	color: #0066ff;
+	background-color: lightgray;
+	border-color: #0066ff;
+	margin: 5px;
+}
+
+.btn-custom:hover {
+	color: lightgray;
+	background-color: #0066ff;
+}
+
+.custom-link {
+	text-decoration: underline;
+}
+
+/* search */
+@media (max-width: 785px) { 
+
+	.custom-search {
+		width: inherit;
+		max-width: 300px;
+	}
+
+}
+@media (max-width: 576px) { 
+
+	.custom-search {
+		/* flex: 0 0 66.666667%; */
+		max-width: 66.666667%;
+		width: inherit;
+		margin-left: 0 !important;
+		margin-right: auto;
+		padding-left: 0 !important;
+	}
+	
+	.custom-profile {
+		flex: 0 0 33.333333%;
+		max-width: 33.333333%;
+		text-align: center;
+	} 
+
+	.custom-search form input {
+		width: auto;
+		max-width: 180px;
+		margin-left: 0 !important;
+		margin-bottom: 5px !important;
+	}
+}
+
+@media (max-width: 576px) { 
+	
+	.custom-profile {
+		max-width: 25%;
+	} 
+
+	.custom-search form input {
+		max-width: 154px;
+	}
+}
+
+/*Home page CSS
+--------------------------------*/
+
+.modal{
+	width:100%;
+	height:100%;
+	background-color: rgba(0,0,0,0.4); 
+}
+
+
+/* Overview page - single page
+-----------------------------------------------------*/
+.overview-page .blog-teaser,
+.single-page .blog-teaser {
+	background: lightgray;
+	color: #0066ff;
+	border: 1px solid #0066ff;
+	margin: 60px 0 0 0;
+}
+
+.overview-page a:hover {
+	text-decoration: none;
+}
+
+.overview-page .blog-teaser:hover {
+	background: #fff;
+	cursor: pointer;
+}
+
+.overview-page .blog-img {
+	padding: 15px 0;
+	max-width: 100%;
+}
+
+.overview-page .blog-hl,
+.single-page .blog-h1 {
+	padding: 15px 0;
+}
+
+.single-page .blog-img-inline {
+	max-width: 40% !important;
+}
+
+/* Profile page
+-----------------------------------------------------*/
+.profile-page .settings-container {
+	background: lightgray;
+	color: #0066ff;
+	border: 1px solid #0066ff;
+	margin: 30px 0;
+}
+
+.profile-page .blog-img-inline {
+	width: inherit;
+}
+
+/* Edit post
+-----------------------------------------------------*/
+.btn-img {
+	width: 132px; 
+	margin-left: 0; 
+	position: absolute;
+}
+
+.label-img {
+	position: absolute; 
+	margin-left: 145px; 
+	margin-top: 12px;
+}
+
+.upload-btn {
+	margin-top: 8px; 
+	position: relative; 
+	opacity: 0;
+}
+
+/* Edit post
+-----------------------------------------------------*/
+.error-message {
+	color: red;
+}

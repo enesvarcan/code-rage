@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<%- include('./partials/head')  %> 
+	</head>
+	<body class="single-page page">
+		<%- include('./partials/header') %> 		
+		<div class="container-fluid" id="body">
+			<div class="container">
+				<%- include('./partials/navigation')  %> 
+				<h3>Edit Post</h3>
+				<form method="POST", action="/post/<%= post._id %>/editPost ">
+				<div class="row blog-teaser">
+						<div class="col-12 mt-4 mb-2">
+							<input type="text" name="header" placeholder="Headline" value="<%= post.header %>">
+						</div>
+						<div class="col-12 my-2">
+							<form enctype="multipart/form-data">
+								<input id="picture" name="picture" type="file" />
+								<input type="button" onclick="uploadPostPicture()" value="Upload">
+							</form>
+							<p id="uploadAlert"></p>
+						</div>
+						<div class="col-md-12 my-2">
+							<textarea class="col-md-8 p-1" name="text" placeholder="Blog text"><%- post.text %></textarea>
+						</div>
+						<div class="col-md-12 my-2">
+							<input type="text" name="keywords" placeholder="Keywords" value="<%= post.keywords %>">
+						</div>
+						<div class="col-md-12 mt-2 mb-4">
+							<button class="btn btn-custom" type="submit" id="submit">Submit</button>
+							<button class="btn btn-custom" type="reset">Reset</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script>
+
+			function uploadPostPicture() {
+				var pathname = window.location.pathname
+				var reg = /\/post\/.{24}\//
+				var url = pathname.match(reg)[0] + 'uploadPhoto'
+
+				var formData = new FormData()
+				formData.append('picture', $('#picture')[0].files[0])
+
+				$.ajax({
+					url: url,
+					type: 'POST',
+					data: formData,
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function (data){
+						if(data.error){
+							$('#uploadAlert').text(data.error.message)
+						}else{
+							$('#uploadAlert').text(data.message)
+						}
+					}
+				})
+			}
+		</script>
+	</body>
+</html>
+	
