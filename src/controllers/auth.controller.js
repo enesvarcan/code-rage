@@ -1,5 +1,7 @@
 const passport = require('passport')
 const dbService = require('../services/database.service')
+const jwt = require('jsonwebtoken')
+const ErrorHandler = require('../helpers/error.handler')
 
 exports.register = (req, res, next) => {
     var userInfo = {
@@ -12,7 +14,8 @@ exports.register = (req, res, next) => {
         if(err) next(err)
         
         if (user){
-            return res.status(200).send({message: 'registration_complete'})
+            req.user = user
+            next()
         } 
     })
 }
@@ -23,7 +26,7 @@ exports.login = (req, res, next) => {
 
         if(err) return next(err)
 
-        if(!user) return res.status(402).send(info)
+        if(!user) return next(new ErrorHandler(400, info.message))
 
         req.logIn(user, function(err){
             if (err) return next(err)
@@ -40,4 +43,60 @@ exports.logout = (req, res, next) => {
     }
 
     res.redirect('/')
+}
+
+exports.createToken = (req, res, next) => {
+
+    var email = req.body.email
+
+    dbService.findUserByEmail(email, (err, user) => {
+        if (err) return next(err)
+
+        if (!user) return next(new ErrorHandler(400, 'user_not_found'))
+
+        jwt.sign(user.email, process.env.SECRET, (err, token) => {
+            if (err) return next(err)
+
+            if (!token) return next(new ErrorHandler(500, 'failed_to_create_token'))
+
+            req.token = token
+
+            next()
+        })
+    })
+
+}
+
+exports.verifyToken = (req, res, next) => {
+
+    var token = req.params.token
+
+    jwt.verify(token, process.env.SECRET, (err, email) => {
+        if (err) return next(new ErrorHandler(500, 'failed_to_verify_token'))
+
+        if(!email) return next(new ErrorHandler(403, 'user_not_found'))
+
+        req.email = email
+
+        next()
+    })
+}
+
+exports.changePassword = (req, res, next) => {
+
+    var newPassword = req.body.newPassword
+
+    dbService.findUserByEmail(req.email, (err, user) => {
+        if (err) return next(err)
+
+        if(!user) return next(new ErrorHandler(400, 'user_not_found'))
+
+        user.password = newPassword
+
+        user.save((err, updatedUser) => {
+            if (err) return next(err)
+
+            return res.send({message: 'password_changed'})
+        })
+    })
 }

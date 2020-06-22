@@ -1,17 +1,17 @@
 //Definitions
 const express = require('express')
 const session = require('express-session')
+const fileUpload = require('express-fileupload')
 const mongoose = require('mongoose')
-const passport = require('passport')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const path = require('path')
-const CONNSTR = require('./config/db.connection')
-const PORT = require('./config/server.port')
 const app = express()
 
+//Configuration: dotenv
+require('dotenv').config({path: path.join(__dirname, '../.env')})
 //Configuration: express-session
-app.use(session({secret: 'b4dc0d3', resave: false, saveUninitialized: true}))
+app.use(session({secret: process.env.SECRET, resave: false, saveUninitialized: true}))
 //Configuration: passport
 require('./config/passport')(app)
 //Configuration: body-parser
@@ -20,12 +20,15 @@ app.use(bodyParser.json())
 //Configuration: cors
 app.use(cors())
 //Configuration: express-static
-app.use(express.static(path.join(__dirname, '..', 'public')))
-//Configuration: errorHandler
-//app.use('*', require('./services/errorhandler.mw').errorHandler)
+app.use('/public', express.static(path.join(__dirname, '../public')))
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
+//Configuration: express-fileupload
+app.use(fileUpload())
 //Configuration: routers
 app.use(require('./routes/auth.router'))
 app.use(require('./routes/main.router'))
+//Configuration: error handler
+require('./controllers/error.controller')(app)
 //Configuration: ejs
 app.set('views', path.join(__dirname, '../views'))
 app.set('view engine', 'ejs')
@@ -35,7 +38,7 @@ mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
 mongoose.set('useUnifiedTopology', true)
 
-mongoose.connect(CONNSTR)
+mongoose.connect(process.env.CONNSTR)
     .then(() => {
         console.log('Succesfully connected to DB...')
         
@@ -43,6 +46,6 @@ mongoose.connect(CONNSTR)
         console.log(err)
     })
 
-app.listen(PORT, () => {
-    console.log(`Listening on port -> ${PORT}`)
+app.listen(process.env.PORT, () => {
+    console.log(`Listening on port -> ${process.env.PORT}`)
 })

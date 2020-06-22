@@ -10,15 +10,18 @@
 		<div class="container-fluid" id="body">
 			<div class="container">
 				<%- include('./partials/navigation')  %> 
+				<h3>My Posts</h3>
+				<% if(posts.length == 0){ %> 
+					<p>To create a post click "Create New Post" button.</p>
+				<% } %> 
                 <% for (const post in posts){ %>
                     <a href="/post/<%= posts[post]._id %>">
 					<div class="row blog-teaser">
-						<% if(posts[post].picture) {%> 
 						<div class="col-md-8">
-						<% } else { %> 
-						<div class="col-md-12">
-						<% } %>
-							<h2 class="blog-hl"><%=posts[post].header%></h2>
+                            <h2 class="blog-hl"><%=posts[post].header%></h2>
+                            <% if(!posts[post].isPublished){ %>
+                                <h3>Draft</h3>
+                            <% } %> 
 							<p>
 								<% if(posts[post].text.length > 350) { %>
 									<%= posts[post].text.substr(0, 350) + '...' %> 
@@ -27,11 +30,11 @@
 								<% } %> 
 							</p>
 						</div>
-						<% if(posts[post].picture) {%> 
-							<div class="col-md-4">
-								<img class="blog-img" src="/uploads/post/<%= posts[post].picture %> ">
-							</div>
-						<% } %> 
+						<div class="col-md-4">
+							<% if(posts[post].picture) {%> 
+							<img class="blog-img" src="/uploads/post/<%= posts[post].picture %> ">
+							<% } %> 
+						</div>
 					</div>
                 </a>
                 <% } %>

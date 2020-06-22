@@ -1,28 +1,58 @@
 /*General CSS
 ------------------------------------*/
+html {
+	border-style: none solid solid solid;
+	border-color: #0066ff;
+	border-width: 2px;
+}
 
-#page {
+.page {
 	width:100%;
-	height:100%;
+	background-color: lightgray;
 }
 
 #header {
 	color: #0066ff;
 	background-color: lightgray;
-	border-style: solid;
+	border-style: solid none solid none;
 	border-color: #0066ff;
+	border-width: 2px;
 }
 
 #body {
 	color: #0066ff;
+	padding-bottom: 30px;
 	background-color: lightgray;
-	border-style: none solid solid solid;
-	border-color: #0066ff;
-	
 }
 
-html,body {
-	height:100%;
+.profile-img {
+	height: 40px;
+	width: 40px !important;
+	border-radius: 50%;
+}
+
+.pt-30 {
+	padding-top: 30px;
+}
+
+.blue-line-hr {
+	border-color: #0066ff;
+}
+
+.btn-custom {
+	color: #0066ff;
+	background-color: lightgray;
+	border-color: #0066ff;
+	margin: 5px;
+}
+
+.btn-custom:hover {
+	color: lightgray;
+	background-color: #0066ff;
+}
+
+.custom-link {
+	text-decoration: underline;
 }
 
 /* search */
@@ -80,20 +110,14 @@ html,body {
 }
 
 
-/* Overview page
+/* Overview page - single page
 -----------------------------------------------------*/
-.overview-page #body {
-	color: #0066ff;
-	background-color: lightgray;
-	border-style: none solid solid solid;
-	border-color: #0066ff;
-}
-
-.overview-page .blog-teaser {
-	background: lightgrey;
+.overview-page .blog-teaser,
+.single-page .blog-teaser {
+	background: lightgray;
 	color: #0066ff;
 	border: 1px solid #0066ff;
-	margin: 30px 0;
+	margin: 60px 0 0 0;
 }
 
 .overview-page a:hover {
@@ -110,22 +134,50 @@ html,body {
 	max-width: 100%;
 }
 
-.overview-page .blog-hl {
+.overview-page .blog-hl,
+.single-page .blog-h1 {
 	padding: 15px 0;
 }
 
-.overview-page .profile-img {
-	height: 40px;
-	width: 40px !important;
-	border-radius: 50%;
+.single-page .blog-img-inline {
+	max-width: 40% !important;
 }
 
-
-
-
-/* Overview page
+/* Profile page
 -----------------------------------------------------*/
+.profile-page .settings-container {
+	background: lightgray;
+	color: #0066ff;
+	border: 1px solid #0066ff;
+	margin: 30px 0;
+}
 
-.blog-img-inline {
-	max-width: 40% !important;
+.profile-page .blog-img-inline {
+	width: inherit;
+}
+
+/* Edit post
+-----------------------------------------------------*/
+.btn-img {
+	width: 132px; 
+	margin-left: 0; 
+	position: absolute;
+}
+
+.label-img {
+	position: absolute; 
+	margin-left: 145px; 
+	margin-top: 12px;
+}
+
+.upload-btn {
+	margin-top: 8px; 
+	position: relative; 
+	opacity: 0;
+}
+
+/* Edit post
+-----------------------------------------------------*/
+.error-message {
+	color: red;
 }

@@ -9,13 +9,20 @@ var PostSchema = new Schema({
         type: mongoose.Types.ObjectId
     },
 
+    username: {
+        required: true,
+        type: String
+    },
+
     header: {
         required: true,
+        default: "New post",
         type: String
     },
 
     text: {
         required: true,
+        default: "New post",
         type: String
     },
 
@@ -25,8 +32,12 @@ var PostSchema = new Schema({
     },
 
     keywords: {
-        //E: array of keywords
-        type: Array
+        type: String
+    },
+
+    isPublished: {
+        default: false,
+        type: Boolean
     },
 
     timestamp:{

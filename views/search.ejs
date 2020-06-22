@@ -10,26 +10,23 @@
 		<div class="container-fluid" id="body">
 			<div class="container">
 				<%- include('./partials/navigation')  %> 
-                <% for (const post in posts){ %>
-                    <a href="/post/<%= posts[post]._id %>">
+				<p><%= results.length %> results for: "<%= term %>" </p>
+				<% for (var result in results){ %>
+                    <a href="/post/<%= result._id %>"  target="_blank">
 					<div class="row blog-teaser">
-						<% if(posts[post].picture) {%> 
+						<% if(results[result].item.picture) {%> 
 						<div class="col-md-8">
 						<% } else { %> 
 						<div class="col-md-12">
 						<% } %>
-							<h2 class="blog-hl"><%=posts[post].header%></h2>
+							<h2 class="blog-hl"><%=results[result].item.header%></h2>
 							<p>
-								<% if(posts[post].text.length > 350) { %>
-									<%= posts[post].text.substr(0, 350) + '...' %> 
-								<% } else { %>
-									<%= posts[post].text %>  
-								<% } %> 
+								<%=results[result].item.text%>
 							</p>
 						</div>
-						<% if(posts[post].picture) {%> 
+						<% if(results[result].item.picture) {%> 
 							<div class="col-md-4">
-								<img class="blog-img" src="/uploads/post/<%= posts[post].picture %> ">
+								<img class="blog-img" src="/uploads/post/<%= results[result].item.picture %> ">
 							</div>
 						<% } %> 
 					</div>

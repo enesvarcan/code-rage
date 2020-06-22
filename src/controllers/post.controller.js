@@ -1,20 +1,98 @@
+const path = require('path')
 const dbService = require('../services/database.service')
 const photoService = require('../services/photo.service')
+const ErrorHandler = require('../helpers/error.handler')
 
 exports.createPost = (req, res, next) => {
 
     var postInfo = {
         userId: req.user._id,
+        username: req.user.username,
         header: req.body.header,
         text: req.body.text,
-        picture: 'path',
         keywords: req.body.keywords,
     }
 
     dbService.insertPost(postInfo, (err, post) => {
         if (err) return next(err)
 
-        return res.send({message: 'post_created', post: post})
+        let redirectUrl = '/post/' + post._id + '/editPost'
+        return res.redirect(redirectUrl)
+    })
+}
+
+exports.uploadPostPhoto = (req, res, next) => {
+
+    var postId = req.params.postId
+
+    dbService.findPost(postId, (err, post) => {
+        if (err) return next(err)
+
+        if(post){
+            photoService.uploadPostPhoto(req, (err, filename) => {
+                if (err) return next(err)
+
+                dbService.updatePost(postId, {picture: filename}, (err, updatedPost) => {
+                    if (err) return next(err)
+
+                    return res.send({message: 'photo_uploaded', updatedPost: updatedPost})
+                })
+            })
+        } else if (!post) return next(new ErrorHandler(404, 'post_not_found'))
+        else{
+            return next(new ErrorHandler(500, 'server_error'))
+        }
+    })
+}
+
+exports.readPostPhoto = (req, res, next) => {
+
+    var postId = req.params.postId
+
+    dbService.findPost(postId, (err, post) => {
+        if (err) return next(err)
+
+        if(post && post.picture){
+            return res.send('/uploads/post/' + post.picture)
+
+        } else if (!post) {
+            return next(new ErrorHandler(400, 'post_not_found'))
+
+        } else if (!post.picture){
+            return next(new ErrorHandler(403, 'no_picture'))
+
+        } else return next(new ErrorHandler(500, 'server_error'))
+    })
+}
+
+exports.deletePostPhoto = (req, res, next) => {
+
+    var postId = req.params.postId
+
+    dbService.findPost(postId, (err, post) => {
+        if (err) return next(err)
+        
+        if(post && post.picture){
+            let filepath = path.join(__dirname, '../../uploads/post/', post.picture)
+            
+            photoService.deletePhoto(filepath, (err, isDeleted) => {
+                if (err) return next(err)
+
+                if(isDeleted){
+                    dbService.updatePost(postId, {picture: undefined}, (err, updatedPost) => {
+                        if (err) return next(err)
+
+                        return res.send({message: 'picture_deleted', updatedPost: updatedPost})
+                    })
+                }
+            })
+        } else if (!post){
+            return next(new ErrorHandler(404, 'post_not_found'))
+
+        } else if (!post.picture){
+            return next(new ErrorHandler(403, 'no_picture'))
+
+        } else return next(new ErrorHandler(500, 'server_error'))
     })
 }
 
@@ -25,7 +103,10 @@ exports.readPost = (req, res, next) => {
     dbService.findPost(postId, (err, post) => {
         if (err) return next(err)
 
+        if(!post) return next(new ErrorHandler(404, 'no_post_found_' + postId))
+
         req.post = post
+
         return next()
     })
 
@@ -46,7 +127,7 @@ exports.readUserPosts = (req, res, next) => {
 
 exports.readAllPosts = (req, res, next) => {
 
-    var query = {} //To select all posts
+    var query = {isPublished: true} //To select all published posts
 
     dbService.findPosts(query, (err, posts) => {
         if (err) return next(err)
@@ -64,25 +145,27 @@ exports.updatePost = (req, res, next) => {
 
         if (err) return next(err)
 
-        else if (!post) return res.send({message: 'post_not_found'})
+        else if (!post) return next(new ErrorHandler(404, 'post_not_found'))
 
-        else if(!post.userId.equals(req.user._id)) return res.send({message: 'unauthorized'})
+        else if(!post.userId.equals(req.user._id)) return next(new ErrorHandler(401, 'unauthorized'))
 
         else if(post){
 
             var update = {
                 text: req.body.text || post.text,
                 header: req.body.header || post.header,
-                picture: photoService.updatePhoto(req.body.picture) || post.picture,
-                keywords: req.body.keywords || post.keywords
+                keywords: req.body.keywords || post.keywords,
+                isPublished: true
             }
 
             dbService.updatePost(postId, update, (err, updatedPost) => {
                 if(err) return next(err)
 
-                return res.send({message: 'post_updated', newPost: updatedPost})
+                return res.redirect('/post/' + updatedPost._id)
             })
         }
+
+        else return next(new ErrorHandler(500, 'server_error'))
     })
 
 }
@@ -95,22 +178,31 @@ exports.deletePost = (req, res, next) => {
 
         if(err) return next(err)
 
-        else if (!post) return res.send({message: 'post_not_found'})
+        else if (!post) return next(new ErrorHandler(404, 'post_not_found'))
 
-        else if(!post.userId.equals(req.user._id)) return res.send({message: 'unauthorized'})
+        else if(!post.userId.equals(req.user._id)) return next(new ErrorHandler(401, 'unauthorized'))
 
         else if (post) {
             dbService.deletePost(postId, (err, deletedPost) => {
                 if(err) return next(err)
-    
+
+                if(deletedPost.picture){
+                    photoService.deletePhoto(path.join(__dirname, '../../uploads/post/', deletedPost.picture), (err, isDeleted) => {
+                        if (err) console.log('Error: Cannot delete picture -> ' + deletedPost.picture)
+                        else if(isDeleted) console.log('Post picture deleted.')
+                    })
+                }
+
                 return res.send({message: 'post_deleted', deletedPost: deletedPost})
             })
         }
 
-        else return res.send({message: 'unknown_error'})
+        else return next(new ErrorHandler(500, 'server_error'))
     })
 
 }
+
+//Comment
 
 exports.createComment = (req, res, next) => {
 
@@ -119,6 +211,7 @@ exports.createComment = (req, res, next) => {
 
     var commentInfo = {
         userId: userId,
+        username: req.user.username,
         postId: postId,
         comment: req.body.comment
     }
@@ -126,13 +219,12 @@ exports.createComment = (req, res, next) => {
     dbService.insertComment(commentInfo, (err, comment) => {
         if(err) return next(err)
 
-        return res.send({message: 'comment_added', comment: comment})
+        return res.redirect('/post/'+postId)
     })
 
 }
 
 exports.readComment = (req, res, next) => {
-    //Do we need this?
     var commentId = req.params.commentId
 
     dbService.findComment(commentId, (err, comment) => {
@@ -150,7 +242,9 @@ exports.readAllComments = (req, res, next) => {
     dbService.findPostComments(postId, (err, comments) => {
         if (err) return next(err)
 
-        req.post.comments = comments
+        if(comments){
+            req.post.comments = comments
+        }
         return next()
     })
     
@@ -164,9 +258,9 @@ exports.updateComment = (req, res, next) => {
     dbService.findComment(commentId, (err, comment) => {
         if(err) return next(err)
 
-        else if(!comment) return res.send({message: 'comment_not_found'})
+        else if(!comment) return next(new ErrorHandler(404, 'comment_not_found'))
 
-        else if(!comment.userId.equals(req.user._id)) return res.send({message: 'unauthorized'})
+        else if(!comment.userId.equals(req.user._id)) return next(new ErrorHandler(401, 'unauthorized'))
 
         else if(comment){
 
@@ -181,7 +275,7 @@ exports.updateComment = (req, res, next) => {
             })
         }
 
-        else return res.send({message: 'unknown_error'})
+        else return next(new ErrorHandler(500, 'server_error'))
     })
 
 }
@@ -193,7 +287,7 @@ exports.deleteComment = (req, res, next) => {
     dbService.findComment(commentId, (err, comment) => {
         if(err) return next(err)
 
-        else if(!comment) return res.send({message: 'comment_not_found'})
+        else if(!comment) return next(new ErrorHandler(404, 'comment_not_found'))
 
         else if(!comment.userId.equals(req.user._id)) return res.send({message: 'unauthorized'})
 
@@ -206,9 +300,11 @@ exports.deleteComment = (req, res, next) => {
             })
         }
 
-        else return res.send({message: 'unknown_error'})
+        else return next(new ErrorHandler(500, 'server_error'))
     })
 }
+
+//Like
 
 exports.changeLikeStatus = (req, res, next) => {
 
@@ -243,6 +339,34 @@ exports.changeLikeStatus = (req, res, next) => {
 
             
         }
+
+        else return next(new ErrorHandler(500, 'server_error'))
     })
     
+}
+
+exports.getLikeStatus = (req, res, next) => {
+
+    var postId = req.params.postId
+    var userId = req.user._id
+
+    dbService.findLike(postId, userId, (err, postLike) => {
+        if(err) return next(err)
+
+        if(postLike) return res.send({message: 'likestatus', likeStatus: true})
+
+        else return res.send({message: 'likestatus', likeStatus: false})
+    })
+
+}
+
+exports.getLikeCount = (req, res, next) => {
+
+    var postId = req.params.postId
+
+    dbService.findLikes(postId, (err, postLikes) => {
+        if (err) return next(err)
+
+        return res.send({message: 'likes', postLikes: postLikes.length})
+    })
 }

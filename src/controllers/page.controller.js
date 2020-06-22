@@ -1,4 +1,6 @@
 const path = require('path')
+const dbService = require('../services/database.service')
+const { profile } = require('console')
 
 /*
 ===========
@@ -39,7 +41,21 @@ exports.renderRegister = (req, res, next) => {
 
     //No data needed to render this page
 
-    return res.send('render register page')
+    return res.render('register')
+}
+
+exports.renderForgotPassword = (req, res, next) => {
+
+    //No data needed to render this page
+
+    return res.send('render forgot password page')
+}
+
+exports.renderForgotPasswordChange = (req, res, next) => {
+
+    //No data needed to render this page
+
+    return res.send('render change password page for forgotten password')
 }
 
 //User
@@ -58,8 +74,19 @@ exports.renderIndex = (req, res, next) => {
     */
 
     //render index page
-    return res.render('index', {user: req.user})
+    if(!req.user){
+        return res.render('home')
+    } else{
+        return res.redirect('/posts')
+    }
 
+}
+
+exports.renderChangePassword = (req, res, next) => {
+
+    //No data needed 
+
+    return res.send('render change password page')
 }
 
 exports.renderProfile = (req, res, next) => {
@@ -78,15 +105,25 @@ exports.renderProfile = (req, res, next) => {
                     .timestamp: Date, time of creation of the profile
 
     */
- 
-    return res.send('render user profile page')
+    return res.render('profile', {user: req.user, profile: req.user.profile, userProfile: req.user.profile})
+}
+
+exports.renderUserProfiles = (req, res, next) => {
+
+    return res.render('profile', {user: req.user, profile: req.user.profile, userProfile: req.profile})
 }
 
 exports.renderProfileCreate = (req, res, next) => {
 
     //No data needed
 
-    return res.send('render user profile creation page')
+    dbService.findProfile(req.user._id, (err, profile) =>{
+        if (err) return next(err)
+
+        if(profile) return res.redirect('/user')
+
+        return res.render('create-profile', {user: req.user, profile: req.user.profile})
+    })
 }
 
 exports.renderProfileEdit = (req, res, next) => {
@@ -94,7 +131,7 @@ exports.renderProfileEdit = (req, res, next) => {
     //User Profile object needed(to write default values to the input field)
     // -req.user.profile
 
-    return res.send('edit user profile')
+    return res.render('edit-profile', {user: req.user, profile: req.user.profile})
 }
 
 exports.renderUserPosts = (req, res, next) => {
@@ -115,7 +152,7 @@ exports.renderUserPosts = (req, res, next) => {
                 }
     */
 
-    return res.send('my posts')
+    return res.render('overview-user', {user: req.user, profile: req.user.profile, posts: req.user.posts})
 }
 
 //Post
@@ -128,9 +165,7 @@ exports.renderAllPosts = (req, res, next) => {
     -req.posts -> JavaScript object containing posts
                 foreach(post in posts)...
     */
-
-    //return res.send(`render all posts\n${req.posts}`)
-    return res.render('overview', {posts: req.posts})
+    return res.render('overview', {user: req.user, profile: req.user.profile, posts: req.posts})
 
 }
 
@@ -152,7 +187,7 @@ exports.renderPost = (req, res, next) => {
     /* return res.send(`render selected post: ${req.post}
                     with comments: ${req.post.comments}`) */
 
-        return res.render('single-post-view', {post: req.post})
+        return res.render('single-post-view', {user: req.user, profile: req.user.profile, post: req.post, comments: req.post.comments})
 
 }
 
@@ -160,7 +195,10 @@ exports.renderPostEdit = (req, res, next) => {
 
     //Post needed
     // -req.post
-    return res.send('render edit post page')
+
+    if(!req.post.userId.equals(req.user._id)) return res.redirect('/')
+
+    return res.render('edit-post', {user: req.user, profile:req.user.profile, post: req.post})
 
 }
 
@@ -182,4 +220,14 @@ exports.renderComment = (req, res, next) => {
     // Comment object needed
     // -req.comment
     return res.send(`comment: ${req.comment}`)
+}
+
+exports.renderSearchResults = (req, res, next) => {
+
+    return res.render('search', {user: req.user, profile: req.user.profile, term: req.query.q, results: req.search.results})
+}
+
+exports.render404 = (req, res, next) => {
+
+    return res.render('404')
 }
